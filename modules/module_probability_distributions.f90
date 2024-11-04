@@ -22,7 +22,7 @@ subroutine init_random_seed()
       CALL SYSTEM_CLOCK(COUNT=clock)
 
       seed = clock + 37 * (/ (i - 1, i = 1, n) /)
-      CALL RANDOM_SEED(PUT = seed)
+      CALL RANDOM_SEED(n)
 
       DEALLOCATE(seed)
 end
