@@ -26,6 +26,17 @@ implicit none
 
 contains
 
+    function odef1(x, y)
+        real, allocatable :: odef1(:)
+        real, intent(in) :: x, y(:)
+
+        allocate(odef1(3))
+
+        odef1(1) =  x + y(1)
+        odef1(2) = -y(3) - y(2) - x
+        odef1(3) =  x - y(1) + y(3)
+    end function
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Euler Explicit
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -142,14 +153,8 @@ contains
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Adams–Bashforth two steps
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    function AB2(f, a, b, N, y0)
+    function AB2(a, b, N, y0)
         real, allocatable :: AB2(:,:)
-        interface
-            function f(x, y)
-                real, allocatable :: f(:)
-                real, intent(in) :: x, y(:)
-            end function
-        end interface
         real, intent(in) :: a, b
         integer, intent(in) :: N
         real, intent(in) :: y0(:)
@@ -162,7 +167,7 @@ contains
 
         AB2(:,1) = y0
         !startup (Euler Explicit)
-        AB2(:,2) = y0 + step*f(a, y0)
+        AB2(:,2) = y0 + step*odef1(a, y0)
 
         do i = 3, N
             xn0 = a+(i-2)*step
@@ -171,21 +176,15 @@ contains
             yn0 = AB2(:,i-2)
             yn1 = AB2(:,i-1)
 
-            AB2(:,i) = AB2(:,i-1) + step*(3.0/2.0*f(xn1,yn1)-0.5*f(xn0,yn0))
+            AB2(:,i) = AB2(:,i-1) + step*(3.0/2.0*odef1(xn1,yn1)-0.5*odef1(xn0,yn0))
         end do
     end function
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Adams–Bashforth five steps
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    function AB5(f, a, b, N, y0)
+    function AB5(a, b, N, y0)
         real, allocatable :: AB5(:,:)
-        interface
-            function f(x, y)
-                real, allocatable :: f(:)
-                real, intent(in) :: x, y(:)
-            end function
-        end interface
         real, intent(in) :: a, b
         integer, intent(in) :: N
         real, intent(in) :: y0(:)
@@ -199,7 +198,7 @@ contains
         AB5(:,1) = y0
         !startup (Runge-Kutta 4th)
         baux = a+step*4
-        AB5(:,2:4) = RK4(f, a, baux, 4, y0)
+        AB5(:,2:4) = RK4(odef1, a, baux, 4, y0)
 
         do i = 5, N
             xn1 = a+(i-5)*step
@@ -214,8 +213,8 @@ contains
             yn4 = AB5(:,i-2)
             yn5 = AB5(:,i-1)
 
-            AB5(:,i) = yn5 + step*(1901.0/720.0*f(xn5,yn5)-1387.0/360.0*f(xn4,yn4)+&
-                       &109.0/30.0*f(xn3,yn3)-637.0/360.0*f(xn2,yn2)+251.0/720.0*f(xn1,yn1))
+            AB5(:,i) = yn5 + step*(1901.0/720.0*odef1(xn5,yn5)-1387.0/360.0*odef1(xn4,yn4)+&
+                       &109.0/30.0*odef1(xn3,yn3)-637.0/360.0*odef1(xn2,yn2)+251.0/720.0*odef1(xn1,yn1))
         end do
     end function
 
