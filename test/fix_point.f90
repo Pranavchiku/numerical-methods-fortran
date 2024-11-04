@@ -27,8 +27,10 @@ if (ok) then
     print *, x0
     print *, "number of iterations:"
     print *, ite
+    error stop "The method converges"
 else
     print *, "The method does not converge"
+    ! Master comes here
 end if
 
 end program

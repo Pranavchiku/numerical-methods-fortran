@@ -17,7 +17,8 @@ real, allocatable :: y(:,:)
 y0(:) = [1.0, 1.0, 1.0]
 
 y = AB2(a, b, N, y0)
-
+print *, sum(y)
+if (abs(sum(y) - 30.3195057) > 1e-8) error stop
 do i = 1, N
     print *, y(:,i)
 end do

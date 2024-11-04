@@ -25,9 +25,12 @@ print *, "\int_0^1 4/(1+x^2) dx"
 print *, " "
 print *, "Solution using rectangle rule:"
 print *, sol1
+if (abs(sol1 - 3.14942145) > 1e-8) error stop
 print *, "Solution using trapezoidal rule:"
 print *, sol2
+if (abs(sol2 - 3.14941883) > 1e-8) error stop
 print *, "Solution using Simpson's rule:"
 print *, sol3
+if (abs(sol3 - 3.14942074) > 1e-8) error stop
 
 end program
