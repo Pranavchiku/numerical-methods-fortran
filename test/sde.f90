@@ -18,6 +18,7 @@ real, allocatable :: y(:,:)
 
 call init_random_seed()
 
+! diverges as random values everytime
 y0(:) = [0.0e-9, -10.0e-9] ! meters
 
 y = W2RK(force_regulation, force_regulation_g, a, b, N, y0)

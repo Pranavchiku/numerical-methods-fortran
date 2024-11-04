@@ -16,6 +16,7 @@ real :: xmed, desv, ymed(2), ydesv(2)
 allocate(x(N), y(N,2))
 
 call init_random_seed()
+! diverges because of the random seed
 
 do i = 1,N
     x(i) = NormalBoxMuller()
