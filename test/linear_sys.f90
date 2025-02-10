@@ -14,7 +14,7 @@ implicit none
 
 real :: A(3,3), b(3), x(3)
 
-A = reshape([2,-2,1, 1,3,-2, 3,-1,-1],[3,3], order = [2,1])
+A = reshape([2,-2,1, 1,3,-2, 3,-1,-1],[3,3])
 b = [3,1,2]
 
 x = resol_lu(A, b)
