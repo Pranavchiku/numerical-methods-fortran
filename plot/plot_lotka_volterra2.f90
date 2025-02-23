@@ -19,21 +19,28 @@ integer :: IER, PGBEG
 
 allocate(x(N))
 
-IER = PGBEG(0,'?',1,1)
+! IER = PGBEG(0,'?',1,1)
+IER = 1
 if (IER.NE.1) stop
 
 y0(:) = [10.0, 5.0]
 
 y = rk4(lvf2, a, b, N, y0)
 
+print *, sum(y)
+if ( abs(sum(y) - 95576.2031) > 1e-8 ) stop
+
 do i=1,N
     x(i) = a + (b-a)/(N-1)*(i-1)
 end do
 
-call PGENV(0.0, 40.0, 0.0, 11.0, 0, 1)
-call PGLAB('(y1)', '(y2)', 'Lotka-Volterra equation')
-CALL PGSCI(2)
-call PGLINE(N,y(1,:),y(2,:))
+print *, sum(x)
+if ( abs(sum(x) - 880000.000) > 1e-8 ) stop
 
-call PGEND
+! call PGENV(0.0, 40.0, 0.0, 11.0, 0, 1)
+! call PGLAB('(y1)', '(y2)', 'Lotka-Volterra equation')
+! CALL PGSCI(2)
+! call PGLINE(N,y(1,:),y(2,:))
+
+! call PGEND
 END

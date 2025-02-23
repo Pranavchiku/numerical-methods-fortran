@@ -9,18 +9,21 @@
 program plot_ode_fun1
 use module_edo, only: AB5
 use dynamical_systems_function, only: bogdanov_takens_bifurcation
+use ieee_arithmetic, only: ieee_is_nan, ieee_is_finite
 implicit none
 
 real :: a = 0.0, b = 25.0
 real, allocatable :: t(:)
-integer :: i, j, N = 2000, Mx = 50, My = 4
+integer :: i, j, N = 2000, Mx = 50, My = 4, k
 real, allocatable :: y(:,:,:,:), y0(:,:,:)
+real :: sum_tmp
 
 integer :: IER, PGBEG
 
 allocate(t(N), y(Mx, My,2,N), y0(Mx, My,2))
 
-IER = PGBEG(0,'?',1,1)
+! IER = PGBEG(0,'?',1,1)
+IER = 1
 if (IER.NE.1) stop
 
 !initial concentration
@@ -43,14 +46,28 @@ do i=1,N
     t(i) = a + (b-a)/(N-1)*(i-1)
 end do
 
-call PGENV(-5.0, 5.0, -5.0, 5.0, 0, 1)
-call PGLAB('y1', 'y2', 'Bogdanov–Takens bifurcation')
+! call PGENV(-5.0, 5.0, -5.0, 5.0, 0, 1)
+! call PGLAB('y1', 'y2', 'Bogdanov–Takens bifurcation')
 
-call PGSCI(2)
+! call PGSCI(2)
+sum_tmp = 0.0
 do i = 1, Mx
     do j = 1, My
-        call PGLINE(N,y(i,j,1,:),y(i,j,2,:))
+        ! call PGLINE(N,y(i,j,1,:),y(i,j,2,:))
+        do k = 1, ubound(y, 4)
+            if (.not. ieee_is_nan(y(i, j, 2, k)) .and. ieee_is_finite(y(i, j, 2, k))) then
+                sum_tmp = sum_tmp + y(i, j, 2, k)
+            end if
+            if (.not. ieee_is_nan(y(i, j, 1, k)) .and. ieee_is_finite(y(i, j, 1, k))) then
+                sum_tmp = sum_tmp + y(i, j, 1, k)
+            end if
+        end do
     end do
 end do
-call PGEND
+
+print *, sum_tmp
+if ( abs(sum_tmp - 7.64239229E+36) > 1e-8) error stop
+print *, sum(t)
+if ( abs(sum(t) - 25000.0039) > 1e-8) error stop
+! call PGEND
 end

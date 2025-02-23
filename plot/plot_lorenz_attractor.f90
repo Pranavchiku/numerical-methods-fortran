@@ -22,33 +22,35 @@ program plot_lorenz_attractor
     allocate(y(3,N))
 
     y = AB5(lorenz, a, b, N, y0)
+    print *, sum(y)
+    if (abs(sum(y) - 226959.016) > 1e-8) stop
 
     !plot using dislin lib
 
-    call SCRMOD('REVERS')
+    ! call SCRMOD('REVERS')
     !call SETPAG('DA4P')
-    call METAFL('CONS')
-    call DISINI()
-    call PAGERA()
-    call COMPLX()
+    ! call METAFL('CONS')
+    ! call DISINI()
+    ! call PAGERA()
+    ! call COMPLX()
     !CALL AXSPOS(200,2600)
     !CALL AXSLEN(1800,1800)
 
-    call NAME('X-axis','X')
-    call NAME('Y-axis','Y')
-    call NAME('Z-axis','Z')
+    ! call NAME('X-axis','X')
+    ! call NAME('Y-axis','Y')
+    ! call NAME('Z-axis','Z')
 
-    call TITLIN(CTIT1,4)
+    ! call TITLIN(CTIT1,4)
 
-    call VIEW3D(3.4,-3.9, 2.,'ABS')
-    call GRAF3D(-20.,20.,-20.,10.,-40.,40.,-40.,20.0,0.0,60.,0.,10.0)
+    ! call VIEW3D(3.4,-3.9, 2.,'ABS')
+    ! call GRAF3D(-20.,20.,-20.,10.,-40.,40.,-40.,20.0,0.0,60.,0.,10.0)
     !call BOX3D
-    call HEIGHT(70)
-    call TITLE()
+    ! call HEIGHT(70)
+    ! call TITLE()
 
-    call COLOR('RED')
-    call CURV3D(y(1,:),y(2,:),y(3,:),N)
+    ! call COLOR('RED')
+    ! call CURV3D(y(1,:),y(2,:),y(3,:),N)
 
-    call DISFIN()
+    ! call DISFIN()
     STOP
 end program plot_lorenz_attractor

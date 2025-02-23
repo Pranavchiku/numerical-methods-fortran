@@ -15,12 +15,14 @@ real :: a = 0.0, b = 250.0
 real, allocatable :: t(:)
 integer :: i, j, N = 10000, Mx = 3, My = 1
 real, allocatable :: y(:,:,:,:), y0(:,:,:)
+real :: sum_tmp
 
 integer :: IER, PGBEG
 
 allocate(t(N), y(Mx, My,2,N), y0(Mx, My,2))
 
-IER = PGBEG(0,'?',1,1)
+! IER = PGBEG(0,'?',1,1)
+IER = 1
 if (IER.NE.1) stop
 
 !initial concentration
@@ -37,14 +39,22 @@ do i=1,N
     t(i) = a + (b-a)/(N-1)*(i-1)
 end do
 
-call PGENV(-3*3.1415, 3*3.1415, -2.0, 2.0, 0, 1)
-call PGLAB('angle(theta)', 'd(theta)/dt', 'pendulum')
+print *, sum(t)
+if (abs(sum(t) - 1250001.75) > 1e-8) stop
 
-call PGSCI(2)
+! call PGENV(-3*3.1415, 3*3.1415, -2.0, 2.0, 0, 1)
+! call PGLAB('angle(theta)', 'd(theta)/dt', 'pendulum')
+
+! call PGSCI(2)
+sum_tmp = 0.0
 do i = 1, Mx
     do j = 1, My
-        call PGLINE(N,y(i,j,1,:),y(i,j,2,:))
+        ! call PGLINE(N,y(i,j,1,:),y(i,j,2,:))
+        sum_tmp = sum_tmp + sum(y(i, j, 1, :)) + sum(y(i, j, 2, :))
     end do
 end do
-call PGEND
+
+print *, sum_tmp
+if (abs(sum_tmp - (-853.619263)) > 1e-8) stop
+! call PGEND
 end

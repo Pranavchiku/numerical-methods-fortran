@@ -22,25 +22,31 @@ call init_random_seed()
 
 allocate(x(N))
 
-IER = PGBEG(0,'?',1,1)
+! IER = PGBEG(0,'?',1,1)
+IER = 1
 if (IER.NE.1) stop
 
 y0(:) = [0.0e-9, -10.0e-9] ! meters
 
 y = W2RK(force_regulation, force_regulation_g, a, b, N, y0)
 
+! y is random, so we can't check the result
+
 do i=1,N
     x(i) = a + (b-a)/(N-1)*(i-1)
 end do
 
-call PGENV(0.0, 100.0, -10.0, 20.0, 0, 1)
-call PGLAB('t(s)', 'distance (nm)', 'Force Regulation by Nascent Adhesion Sites')
-call PGMTXT ('RV', 0.0, 0.95, 1.5, "X(t) (Red)")
-call PGMTXT ('RV', 0.0, 0.90, 1.25,"Z(t) (Green)")
-call PGSCI(2)
-call PGLINE(N,x,y(1,:)*1e9)
-call PGSCI(3)
-call PGLINE(N,x,y(2,:)*1e9)
+print *, sum(x)
+if (abs(sum(x) - 5000007.00) > 1e-8) stop
 
-call PGEND
+! call PGENV(0.0, 100.0, -10.0, 20.0, 0, 1)
+! call PGLAB('t(s)', 'distance (nm)', 'Force Regulation by Nascent Adhesion Sites')
+! call PGMTXT ('RV', 0.0, 0.95, 1.5, "X(t) (Red)")
+! call PGMTXT ('RV', 0.0, 0.90, 1.25,"Z(t) (Green)")
+! call PGSCI(2)
+! call PGLINE(N,x,y(1,:)*1e9)
+! call PGSCI(3)
+! call PGLINE(N,x,y(2,:)*1e9)
+
+! call PGEND
 END

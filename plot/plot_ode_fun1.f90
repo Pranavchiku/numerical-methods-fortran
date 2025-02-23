@@ -17,24 +17,31 @@ real, allocatable :: y(:,:)
 
 integer :: IER, PGBEG
 
-IER = PGBEG(0,'?',1,1)
+! IER = PGBEG(0,'?',1,1)
+IER = 1
 if (IER.NE.1) stop
 
 y0(:) = [1.0, 1.0, 1.0]
 
 y = AB5(odef1, a, b, N, y0)
 
+print *, sum(y)
+if (abs(sum(y) - 297.260071) > 1e-8) error stop
+
 do i=1,100
     x(i) = a + (b-a)/(N-1)*(i-1)
 end do
 
-call PGENV(a, b, -5.0, 10.0, 0, 1)
-call PGLAB('(x)', '(y)', 'ODE Graph')
-call PGSCI(2)
-call PGLINE(N,x,y(1,:))
-call PGSCI(3)
-call PGLINE(N,x,y(2,:))
-call PGSCI(4)
-call PGLINE(N,x,y(3,:))
-call PGEND
+print *, sum(x)
+if (abs(sum(x) - 49.9999962) > 1e-8) error stop
+
+! call PGENV(a, b, -5.0, 10.0, 0, 1)
+! call PGLAB('(x)', '(y)', 'ODE Graph')
+! call PGSCI(2)
+! call PGLINE(N,x,y(1,:))
+! call PGSCI(3)
+! call PGLINE(N,x,y(2,:))
+! call PGSCI(4)
+! call PGLINE(N,x,y(3,:))
+! call PGEND
 end

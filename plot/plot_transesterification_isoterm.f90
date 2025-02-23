@@ -20,7 +20,8 @@ integer :: IER, PGBEG
 
 allocate(t(N))
 
-IER = PGBEG(0,'?',1,1)
+! IER = PGBEG(0,'?',1,1)
+IER = 1
 if (IER.NE.1) stop
 
 !initial concentration
@@ -30,30 +31,36 @@ y0(:) = [1.0, 0.0, 0.0, 0.0, 6.0, 0.0]
 
 y = AB5(reacc_trans_isoterm, a, b, N, y0)
 
+print *, sum(y)
+if (abs(sum(y) - 12380.3926) > 1e-8) stop
+
 do i=1,N
     t(i) = a + (b-a)/(N-1)*(i-1)
 end do
 
-call PGENV(a, b, 0.0, 6.5, 0, 1)
-call PGLAB('t(min)', 'concentration (mol)', 'isotherm transesterification reaction (50 C)')
-call PGMTXT ('RV', 0.0, 0.95, 1.5, "Triglycerides (Red)")
-call PGMTXT ('RV', 0.0, 0.90, 1.45, "Diglycerides (Green)")
-call PGMTXT ('RV', 0.0, 0.85, 1.40, "Monoglycerides (Blue)")
-call PGMTXT ('RV', 0.0, 0.80, 1.57, "Glycerin (Cyan)")
-call PGMTXT ('RV', 0.0, 0.75, 1.5, "Alcohol (Magenta)")
-call PGMTXT ('RV', 0.0, 0.70, 1.5, "Ethylester (Yellow)")
+print *, sum(t)
+if (abs(sum(t) - 25000.0039) > 1e-8) stop
 
-call PGSCI(2)
-call PGLINE(N,t,y(1,:))
-call PGSCI(3)
-call PGLINE(N,t,y(2,:))
-call PGSCI(4)
-call PGLINE(N,t,y(3,:))
-call PGSCI(5)
-call PGLINE(N,t,y(4,:))
-call PGSCI(6)
-call PGLINE(N,t,y(5,:))
-call PGSCI(7)
-call PGLINE(N,t,y(6,:))
-call PGEND
+! call PGENV(a, b, 0.0, 6.5, 0, 1)
+! call PGLAB('t(min)', 'concentration (mol)', 'isotherm transesterification reaction (50 C)')
+! call PGMTXT ('RV', 0.0, 0.95, 1.5, "Triglycerides (Red)")
+! call PGMTXT ('RV', 0.0, 0.90, 1.45, "Diglycerides (Green)")
+! call PGMTXT ('RV', 0.0, 0.85, 1.40, "Monoglycerides (Blue)")
+! call PGMTXT ('RV', 0.0, 0.80, 1.57, "Glycerin (Cyan)")
+! call PGMTXT ('RV', 0.0, 0.75, 1.5, "Alcohol (Magenta)")
+! call PGMTXT ('RV', 0.0, 0.70, 1.5, "Ethylester (Yellow)")
+
+! call PGSCI(2)
+! call PGLINE(N,t,y(1,:))
+! call PGSCI(3)
+! call PGLINE(N,t,y(2,:))
+! call PGSCI(4)
+! call PGLINE(N,t,y(3,:))
+! call PGSCI(5)
+! call PGLINE(N,t,y(4,:))
+! call PGSCI(6)
+! call PGLINE(N,t,y(5,:))
+! call PGSCI(7)
+! call PGLINE(N,t,y(6,:))
+! call PGEND
 end

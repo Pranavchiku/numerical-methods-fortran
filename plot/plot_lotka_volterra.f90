@@ -19,33 +19,39 @@ integer :: IER, PGBEG
 
 allocate(x(N))
 
-IER = PGBEG(0,'?',1,1)
+! IER = PGBEG(0,'?',1,1)
+IER = 1
 if (IER.NE.1) stop
 
 y0(:) = [10.0, 5.0]
 
 y = AB5(lvf1, a, b, N, y0)
 
+print *, sum(y)
+if (abs(sum(y) - 66183.9531) > 1e-8) stop
+
 do i=1,N
     x(i) = a + (b-a)/(N-1)*(i-1)
 end do
+print *, sum(x)
+if (abs(sum(x) - 140000.016) > 1e-8) stop
 
-CALL PGSUBP (1, 2)
-call PGENV(a, b, 0.0, 80.0, 0, 1)
-call PGLAB('t', 'y', 'Lotka-Volterra equation')
-CALL PGSCI(2)
-call PGLINE(N,x,y(1,:))
-CALL PGSCI(3)
-call PGLINE(N,x,y(2,:))
+! CALL PGSUBP (1, 2)
+! call PGENV(a, b, 0.0, 80.0, 0, 1)
+! call PGLAB('t', 'y', 'Lotka-Volterra equation')
+! CALL PGSCI(2)
+! call PGLINE(N,x,y(1,:))
+! CALL PGSCI(3)
+! call PGLINE(N,x,y(2,:))
 
 
-CALL PGPANL(1, 1)
-CALL PGSCI(1)
-call PGENV(0.0, 70.0, 0.0, 20.0, 0, 1)
-call PGLAB('y1', 'y2', 'Lotka-Volterra equation')
-CALL PGSCI(2)
-call PGLINE(N,y(1,:),y(2,:))
+! CALL PGPANL(1, 1)
+! CALL PGSCI(1)
+! call PGENV(0.0, 70.0, 0.0, 20.0, 0, 1)
+! call PGLAB('y1', 'y2', 'Lotka-Volterra equation')
+! CALL PGSCI(2)
+! call PGLINE(N,y(1,:),y(2,:))
 
-call PGEND
+! call PGEND
 
 END
