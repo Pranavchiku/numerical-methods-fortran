@@ -43,7 +43,7 @@ PLOTSFILES = $(PLOTDIR)/plot_bogdanov_takens_bifurcation.f90 \
 			 $(PLOTDIR)/plot_transesterification_isoterm.f90 \
 			 $(PLOTDIR)/plot_bruinsma.f90
 
-all : compilar exetest clean
+all : compilar exetest exeplots clean
 
 exetest :
 	$(FC) -o test_newton.exe newton_test.o whatever_function.o module_linear_equations.o module_no_linear_equations.o
@@ -56,17 +56,17 @@ exetest :
 
 
 exeplots :
-	$(FC) -o plot_fun1.exe plot_ode_fun1.o $(PGPLOTLIB) whatever_function.o module_edo.o
-	$(FC) -o plot_lotka_volterra1.exe plot_lotka_volterra.o $(PGPLOTLIB) lotka_volterra_function.o module_edo.o
-	$(FC) -o plot_lotka_volterra2.exe plot_lotka_volterra2.o $(PGPLOTLIB) lotka_volterra_function.o module_edo.o
-	$(FC) -o plot_transes_iso.exe plot_transesterification_isoterm.o $(PGPLOTLIB) chemical_reaction_function.o module_edo.o
-	$(FC) -o plot_bogdanov_takens.exe plot_bogdanov_takens_bifurcation.o $(PGPLOTLIB) dynamical_systems_function.o module_edo.o
-	$(FC) -o plot_pendulum.exe plot_pendulum.o $(PGPLOTLIB) dynamical_systems_function.o module_edo.o
-	$(FC) -o plot_lorenz.exe plot_lorenz_attractor.o $(DISLINLIB) dynamical_systems_function.o module_edo.o
-	$(FC) -o plot_bruinsma.exe plot_bruinsma.o $(PGPLOTLIB) module_probability_distributions.o stochastic_dynamical_systems_function.o module_sdo.o
+	$(FC) -o plot_fun1.exe plot_ode_fun1.o whatever_function.o module_edo.o
+	$(FC) -o plot_lotka_volterra1.exe plot_lotka_volterra.o lotka_volterra_function.o module_edo.o
+	$(FC) -o plot_lotka_volterra2.exe plot_lotka_volterra2.o lotka_volterra_function.o module_edo.o
+	$(FC) -o plot_transes_iso.exe plot_transesterification_isoterm.o chemical_reaction_function.o module_edo.o
+	$(FC) -o plot_bogdanov_takens.exe plot_bogdanov_takens_bifurcation.o dynamical_systems_function.o module_edo.o
+	$(FC) -o plot_pendulum.exe plot_pendulum.o dynamical_systems_function.o module_edo.o
+	$(FC) -o plot_lorenz.exe plot_lorenz_attractor.o dynamical_systems_function.o module_edo.o
+	$(FC) -o plot_bruinsma.exe plot_bruinsma.o module_probability_distributions.o stochastic_dynamical_systems_function.o module_sdo.o
 
 
-compilar : modulos function pruebas
+compilar : modulos function pruebas plots
 
 #compile modules
 modulos :
@@ -97,8 +97,16 @@ pruebas :
 	$(FC) -c $(TESTDIR)/sde.f90 $(DISLINLIB)
 	$(FC) -c $(TESTDIR)/probability_distribution.f90 $(DISLINLIB)
 
-# plots :
+plots :
 # 	$(FC) -c $(PLOTSFILES) $(DISLINLIB) $(PGPLOTLIB)
+	$(FC) -c $(PLOTDIR)/plot_bogdanov_takens_bifurcation.f90 $(DISLINLIB)
+	$(FC) -c $(PLOTDIR)/plot_bruinsma.f90 $(DISLINLIB)
+	$(FC) -c $(PLOTDIR)/plot_lorenz_attractor.f90 $(DISLINLIB)
+	$(FC) -c $(PLOTDIR)/plot_lotka_volterra.f90 $(DISLINLIB)
+	$(FC) -c $(PLOTDIR)/plot_lotka_volterra2.f90 $(DISLINLIB)
+	$(FC) -c $(PLOTDIR)/plot_ode_fun1.f90 $(DISLINLIB)
+	$(FC) -c $(PLOTDIR)/plot_pendulum.f90 $(DISLINLIB)
+	$(FC) -c $(PLOTDIR)/plot_transesterification_isoterm.f90 $(DISLINLIB)
 
 clean:
 	rm *.o *.mod
