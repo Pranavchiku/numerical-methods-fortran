@@ -197,6 +197,7 @@ contains
         step = (b-a)/(N-1)
 
         AB5(:,1) = y0
+        AB5(:,0) = 0.0
         !startup (Runge-Kutta 4th)
         baux = a+step*4
         AB5(:,2:4) = RK4(f, a, baux, 4, y0)
