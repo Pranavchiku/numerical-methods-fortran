@@ -23,7 +23,7 @@ program plot_lorenz_attractor
 
     y = AB5(lorenz, a, b, N, y0)
     print *, sum(y)
-    if (abs(sum(y) - 226959.016) > 1e-8) stop
+    if (abs(sum(y) - 226959.016) > 1e-8) error stop
 
     !plot using dislin lib
 
@@ -52,5 +52,4 @@ program plot_lorenz_attractor
     ! call CURV3D(y(1,:),y(2,:),y(3,:),N)
 
     ! call DISFIN()
-    STOP
 end program plot_lorenz_attractor

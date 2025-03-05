@@ -37,7 +37,7 @@ do i=1,N
 end do
 
 print *, sum(x)
-if (abs(sum(x) - 5000007.00) > 1e-8) stop
+if (abs(sum(x) - 5000007.00) > 1e-8) error stop
 
 ! call PGENV(0.0, 100.0, -10.0, 20.0, 0, 1)
 ! call PGLAB('t(s)', 'distance (nm)', 'Force Regulation by Nascent Adhesion Sites')

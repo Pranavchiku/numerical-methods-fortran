@@ -39,7 +39,7 @@ do i=1,N
 end do
 
 print *, sum(t)
-if (abs(sum(t) - 25000.0039) > 1e-8) stop
+if (abs(sum(t) - 25000.0039) > 1e-8) error stop
 
 ! call PGENV(a, b, 0.0, 6.5, 0, 1)
 ! call PGLAB('t(min)', 'concentration (mol)', 'isotherm transesterification reaction (50 C)')

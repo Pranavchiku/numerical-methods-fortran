@@ -40,7 +40,7 @@ do i=1,N
 end do
 
 print *, sum(t)
-if (abs(sum(t) - 1250001.75) > 1e-8) stop
+if (abs(sum(t) - 1250001.75) > 1e-8) error stop
 
 ! call PGENV(-3*3.1415, 3*3.1415, -2.0, 2.0, 0, 1)
 ! call PGLAB('angle(theta)', 'd(theta)/dt', 'pendulum')
@@ -55,6 +55,6 @@ do i = 1, Mx
 end do
 
 print *, sum_tmp
-if (abs(sum_tmp - (-853.619263)) > 1e-8) stop
+if (abs(sum_tmp - (-853.619263)) > 1e-8) error stop
 ! call PGEND
 end

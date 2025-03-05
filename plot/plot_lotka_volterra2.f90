@@ -28,14 +28,14 @@ y0(:) = [10.0, 5.0]
 y = rk4(lvf2, a, b, N, y0)
 
 print *, sum(y)
-if ( abs(sum(y) - 95576.2031) > 1e-8 ) stop
+if ( abs(sum(y) - 95576.2031) > 1e-8 ) error stop
 
 do i=1,N
     x(i) = a + (b-a)/(N-1)*(i-1)
 end do
 
 print *, sum(x)
-if ( abs(sum(x) - 880000.000) > 1e-8 ) stop
+if ( abs(sum(x) - 880000.000) > 1e-8 ) error stop
 
 ! call PGENV(0.0, 40.0, 0.0, 11.0, 0, 1)
 ! call PGLAB('(y1)', '(y2)', 'Lotka-Volterra equation')
